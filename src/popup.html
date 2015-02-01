@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Call it a day setting</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+      }
+      #status {
+        /* avoid an excessively wide status text */
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+    </style>
+
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <input type="text" name="hours">
+    <button type="button" id="start-button">Click Me!</button>
+  </body>
+</html>
+

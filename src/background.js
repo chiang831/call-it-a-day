@@ -34,7 +34,6 @@ function inList(list, url) {
 }
 
 function stopAlarm(alarm) {
-  timeLeftSecs = (alarm.scheduledTime - Date.now()) / 1000.0;
   chrome.alarms.clear(
       ALARM_NAME,
       function callback(wasCleared) {
@@ -47,22 +46,25 @@ function stopAlarm(alarm) {
   );
 }
 
-function checkAlarmAndStop() {
+function checkAlarmAndStop(updateTimeLeft) {
   chrome.alarms.get(
       ALARM_NAME,
       function callback(alarm) {
         if (alarm) {
           console.log('There is an alarm');
+          if (updateTimeLeft) {
+            timeLeftSecs = (alarm.scheduledTime - Date.now()) / 1000.0;
+          }
           stopAlarm(alarm);
         } else {
-          console.log('No timer, just keep playing.');
+          console.log('No timer');
         }
       }
   );
 }
 
 function playFlow() {
-  checkAlarmAndStop();
+  checkAlarmAndStop(true);
 }
 
 function setAlarm() {
@@ -126,16 +128,21 @@ function startUrl(url) {
   }
 }
 
-function warningGoHome() {
-  hour = INIT_TIME_LEFT_SECS / 3600.0;
+function secToHour(sec) {
+  hour = sec/ 3600.0;
   hour = hour.toPrecision(3);
+  return hour;
+}
+
+function warningGoHome() {
+  hour = secToHour(INIT_TIME_LEFT_SECS);
   alert('You have worked for ' + hour + 'hours! ' +
         'Time to go home!');
   console.log('You have worked for ' + hour + 'hours! ' +
               'Time to go home!');
 }
 
-function handleTab(tab){
+function handleTab(tab) {
   /* Only cares active tab. */
   if ( !tab.active ) {
     return;
@@ -146,6 +153,13 @@ function handleTab(tab){
   } else {
     console.error('url not available');
   }
+}
+
+function startADay() {
+  timeLeftSecs = INIT_TIME_LEFT_SECS;
+  hour = secToHour(timeLeftSecs);
+  console.log('start a new day with work hour: ' + hour);
+  checkAlarmAndStop(false);
 }
 
 /*

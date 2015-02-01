@@ -9,8 +9,13 @@
     "scripts": ["background.js"]
   },
 
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+
   "permissions": [
     "tabs",
     "alarms"
   ]
+
 }
