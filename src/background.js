@@ -2,9 +2,8 @@
 var playList = ["facebook", "youtube"];
 var workList = ["google"];
 
-/* TODO: let user set a desired value when this app is clicked.*/
-var INIT_TIME_LEFT_SECS = 10;
-var timeLeftSecs = INIT_TIME_LEFT_SECS;
+var workHours;
+var timeLeftSecs;
 var ALARM_NAME = 'Call it a day';
 
 function getCurrentTabUrl(windowId, callback) {
@@ -135,10 +134,9 @@ function secToHour(sec) {
 }
 
 function warningGoHome() {
-  hour = secToHour(INIT_TIME_LEFT_SECS);
-  alert('You have worked for ' + hour + 'hours! ' +
+  alert('You have worked for ' + workHours + 'hours! ' +
         'Time to go home!');
-  console.log('You have worked for ' + hour + 'hours! ' +
+  console.log('You have worked for ' + workHours + 'hours! ' +
               'Time to go home!');
 }
 
@@ -155,10 +153,11 @@ function handleTab(tab) {
   }
 }
 
-function startADay() {
-  timeLeftSecs = INIT_TIME_LEFT_SECS;
-  hour = secToHour(timeLeftSecs);
-  console.log('start a new day with work hour: ' + hour);
+/* This function is called by popup.js when user click Go. */
+function startADay(workHoursFromPopup) {
+  workHours = workHoursFromPopup;
+  console.log('start a day with work hours ' + workHours);
+  timeLeftSecs = workHours * 3600;
   checkAlarmAndStop(false);
 }
 
